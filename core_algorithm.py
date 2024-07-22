@@ -1,24 +1,24 @@
 # coding=utf-8
-from lytools import *
-import xymap
+from my_tools import *
+import my_xy_map as xymap
 import PIL.Image as Image
 import semopy
 T = Tools()
 
-this_root = rf'C:\Users\wenzhang1\PycharmProjects\Seasonal-stabilization-slowed-down-greening\\'
-data_root = this_root + 'Data\\'
-result_root = this_root + 'Result\\'
+this_root = ''
+data_root = this_root + 'Data/'
+result_root = this_root + 'Result/'
 
 class build_dataframe():
 
     def __init__(self):
 
-        self.this_class_arr = result_root + rf'Data_frame\Frequency\MCD\\'
-        # self.this_class_arr = result_root + rf'Data_frame\Frequency\Trendy_ensemble\\'
+        self.this_class_arr = result_root + rf'Data_frame/Frequency/MCD/'
+        # self.this_class_arr = result_root + rf'Data_frame/Frequency/Trendy_ensemble/'
 
         Tools().mk_dir(self.this_class_arr, force=True)
         self.dff = self.this_class_arr + 'frequency_dataframe.df'
-        self.P_PET_fdir = data_root+rf'\Base_data\aridity_P_PET_dic\\'
+        self.P_PET_fdir = data_root+rf'/Base_data/aridity_P_PET_dic/'
         pass
 
     def run(self):
@@ -77,7 +77,7 @@ class build_dataframe():
 
     def foo1(self, df):
 
-        f = result_root + rf'detrend_zscore\LAI\early_peak\MCD.npy'
+        f = result_root + rf'detrend_zscore/LAI/early_peak/MCD.npy'
         dic = {}
         outf = self.dff
         result_dic = {}
@@ -86,7 +86,7 @@ class build_dataframe():
         pix_list = []
         change_rate_list = []
         year = []
-        f_name = f.split('\\')[-2]+'_'+f.split('\\')[-1].split('.')[0]
+        f_name = f.split('/')[-2]+'_'+f.split('/')[-1].split('.')[0]
         # print(f_name)
 
         for pix in tqdm(dic):
@@ -110,7 +110,7 @@ class build_dataframe():
 
     def foo2(self, df):
 
-        f = 'zscore\daily_Y\peak/during_peak_LAI3g_zscore.npy'
+        f = 'zscore/daily_Y/peak/during_peak_LAI3g_zscore.npy'
         val_array = np.load(f)
         val_dic = DIC_and_TIF().spatial_arr_to_dic(val_array)
 
@@ -193,7 +193,7 @@ class build_dataframe():
     def add_GLC_landcover_data_to_df(self, df):
 
 
-        f = data_root+rf'\Base_data\LC_reclass2.npy'
+        f = data_root+rf'/Base_data/LC_reclass2.npy'
 
         val_dic=T.load_npy(f)
 
@@ -300,8 +300,8 @@ class frequency_analysis():  # Amplification and Stabilization analysis
     def __init__(self):
 
         # This class is used to calculate the structural equation model
-        self.this_class_arr = result_root + 'Data_frame\\Frequency\\MCD\\'
-        self.this_class_tif = result_root + 'Data_frame\\Frequency\\MCD\\tif\\'
+        self.this_class_arr = result_root + 'Data_frame/Frequency/MCD/'
+        self.this_class_tif = result_root + 'Data_frame/Frequency/MCD/tif/'
 
         self.dff = self.this_class_arr + 'frequency_dataframe.df'
 
@@ -314,7 +314,7 @@ class frequency_analysis():  # Amplification and Stabilization analysis
 
         ### 1.create frequency dataframe
 
-        # df=self.pick_greening_year_frequency_heatmap()
+        df=self.pick_greening_year_frequency_heatmap()
 
         ## 2. add landcover and trend, row, and some attributes such as aridity
 
@@ -324,7 +324,7 @@ class frequency_analysis():  # Amplification and Stabilization analysis
         # build_dataframe().add_NDVI_mask(df)
         # build_dataframe().add_GLC_landcover_data_to_df(df)
         # build_dataframe().add_max_trend_to_df(df)
-        # P_PET_fdir = data_root + rf'\Base_data\aridity_P_PET_dic\\'
+        # P_PET_fdir = data_root + rf'/Base_data/aridity_P_PET_dic/'
         # P_PET_dic = build_dataframe().P_PET_ratio(P_PET_fdir)
         #
         # P_PET_reclass_dic = build_dataframe().P_PET_reclass_2(P_PET_dic)
@@ -370,9 +370,9 @@ class frequency_analysis():  # Amplification and Stabilization analysis
     def pick_greening_year_frequency_heatmap(self): #
         # select years which is defined as stabilization, amplification years and create a dataframe
 
-        f_early_peak_LAI = data_root + rf'\detrended_zscore_LAI\\early_peak\\MCD.npy'
-        f_late_LAI = data_root + rf'\detrended_zscore_LAI\\late\\MCD.npy'
-        outdir = result_root + rf'Data_frame/Frequency//MCD///'
+        f_early_peak_LAI = data_root + rf'/detrended_zscore_LAI/early_peak/MCD.npy'
+        f_late_LAI = data_root + rf'/detrended_zscore_LAI/late/MCD.npy'
+        outdir = result_root + rf'Data_frame/Frequency/MCD/'
         # outf = outdir + f'frequency_dataframe2.df'
         outf = self.dff
         T.mk_dir(outdir, force=1)
@@ -515,7 +515,7 @@ class frequency_analysis():  # Amplification and Stabilization analysis
             label_matrix=abs(z_list_T)
             label_matrix=np.round(label_matrix,2)
             print(label_matrix)
-            # np.save(result_root + rf'Data_frame\\Frequency\\LAI3g_MCD_2003_2018\\MCD_{region}.npy', label_matrix)
+            # np.save(result_root + rf'Data_frame/Frequency/LAI3g_MCD_2003_2018/MCD_{region}.npy', label_matrix)
             # exit()
 
 
@@ -538,7 +538,7 @@ class frequency_analysis():  # Amplification and Stabilization analysis
 
             plt.show()
         # plt.close()
-        #     plt.savefig(result_root + rf'Data_frame\\Frequency\\Trendy_{region}.pdf', dpi=300, )
+        #     plt.savefig(result_root + rf'Data_frame/Frequency/Trendy_{region}.pdf', dpi=300, )
         #     plt.close()
 
 
@@ -733,7 +733,7 @@ class SEM:
     def __init__(self):
         # This class is used to calculate the structural equation model
 
-        self.outdir = result_root + 'SEM//'
+        self.outdir = result_root + 'SEM/'
         T.mkdir(self.outdir, force=True)
 
         pass
@@ -821,7 +821,7 @@ class SEM:
 
 class SEM_anaysis():  #### SEM result comparision between observation and model
     def __init__(self):
-        self.this_class_arr = result_root + 'SEM_anaysis\\'
+        self.this_class_arr = result_root + 'SEM_anaysis/'
         T.mk_dir(self.this_class_arr, force=1)
         pass
     def run(self):
@@ -1045,7 +1045,7 @@ class Stabilization_amplification_longterm_trends:
                         'p_value': p_value,
 
                     }
-        outdir = result_root + rf'\zscore_result_statistical_annual\\'
+        outdir = result_root + rf'/zscore_result_statistical_annual/'
         T.mk_dir(outdir, force=1)
         outf = outdir + 'zscore_result_statistical_annual.npy'
         T.save_npy(result_dic, outf)
@@ -1127,7 +1127,7 @@ class Stabilization_amplification_longterm_trends:
 
         df_dir = join(data_root, 'dataframe_zscore_LAI_split')
         df = load_split_dataframe(df_dir)
-        f_individual = result_root + rf'\zscore_result_statistical_annual\\zscore_result_statistical_annual.npy'
+        f_individual = result_root + rf'/zscore_result_statistical_annual/zscore_result_statistical_annual.npy'
         dic_individual = T.load_npy(f_individual)
         # print(dic_individual)
         # pprint.pprint(dic_individual)
@@ -1174,7 +1174,7 @@ class Stabilization_amplification_longterm_trends:
                 # dic_individual.update(result_dic)
                 # exit()
 
-        outdir = result_root + rf'\zscore_result_statistical_annual\\'
+        outdir = result_root + rf'/zscore_result_statistical_annual/'
         T.mk_dir(outdir, force=1)
         outf = outdir + 'zscore_result_statistical_annual_average.npy'
         T.save_npy(dic_individual, outf)
@@ -1183,7 +1183,7 @@ class Stabilization_amplification_longterm_trends:
 
 
     def plot_time_series_zscore(self):  ###plot time series
-        f = result_root + rf'\zscore_result_statistical_annual\\zscore_result_statistical_annual_average.npy'
+        f = result_root + rf'/zscore_result_statistical_annual/zscore_result_statistical_annual_average.npy'
         dic = T.load_npy(f)
         period_name = ['early_peak', 'late', 'early_peak_late']
 
@@ -1253,7 +1253,7 @@ class Stabilization_amplification_longterm_trends:
                 plt.tight_layout()
                 i = i + 1
         plt.show()
-        # outdir = result_root + rf'\\Data_frame\zscore_result_statistical_annual\\'
+        # outdir = result_root + rf'/Data_frame/zscore_result_statistical_annual/'
         # T.mk_dir(outdir, force=1)
         # outf = outdir + 'zscore_result_statistical_annual_average.pdf'
         # plt.savefig(outf)
@@ -1381,11 +1381,11 @@ class Stabilization_amplification_longterm_trends:
         T.df_to_excel(df_result, outf)
 
     def zscore_vs_stabilization_composition(self):  ### compose stabilization trends and LAI trends over 2003-2021
-        f_trend = result_root + rf'\zscore_result_statistical_annual\\zscore_result_statistical_annual.npy'
+        f_trend = result_root + rf'/zscore_result_statistical_annual/zscore_result_statistical_annual.npy'
         dic_trend = T.load_npy(f_trend)
-        dff=result_root+rf'\stabilization_temporal_change_statistic\stabilization_temporal_change_statistic.df'
+        dff=result_root+rf'/stabilization_temporal_change_statistic/stabilization_temporal_change_statistic.df'
         df=T.load_df(dff)
-        outdir=result_root+rf'\zscore_vs_stabilization_composition\\'
+        outdir=result_root+rf'/zscore_vs_stabilization_composition/'
         T.mk_dir(outdir,force=1)
         dff_new = outdir + 'zscore_vs_stabilization_composition.df'
         period_name = ['early_peak', 'late','early_peak_late']
@@ -1448,7 +1448,7 @@ class Stabilization_amplification_longterm_trends:
         T.df_to_excel(df_merge,dff_new, n=1000, random=False)
 
     def plot_feedback_vs_trend(self):
-        dff=result_root+rf'\zscore_vs_stabilization_composition\\zscore_vs_stabilization_composition.df'
+        dff=result_root+rf'/zscore_vs_stabilization_composition/zscore_vs_stabilization_composition.df'
         df=T.load_df(dff)
         marker_list = ['*','o', 's', 'D', 'v', 'p', 'P', '^', 'X', 'd', '<', '>']
 
@@ -1500,7 +1500,7 @@ class Stabilization_amplification_longterm_trends:
 
                     p_value_sta=p_value_list_sta[i]
                     plt.scatter(x,y,label=label,marker=marker_list[flag],color=color_list[flag])
-                    plt.text(x, y, f'P={p_value_trend[0]:0.2f}\nP={p_value_sta[0]:0.2f}', fontsize=6, color='black')
+                    plt.text(x, y, f'P={p_value_trend[0]:0.2f}/nP={p_value_sta[0]:0.2f}', fontsize=6, color='black')
 
                     flag+=1
 
@@ -1510,7 +1510,7 @@ class Stabilization_amplification_longterm_trends:
                 plt.legend()
                 plt.tight_layout()
                 plt.show()
-                # outdir=result_root+rf'\\zscore_vs_stabilization_composition\\'
+                # outdir=result_root+rf'/zscore_vs_stabilization_composition/'
                 # outf=join(outdir,f'{region}_{period}.pdf')
                 # plt.savefig(outf)
                 # plt.close()
@@ -1570,12 +1570,12 @@ class Dataframe_per_value_transform:
 
 
 def split_dataframe():
-    # outdir = r"C:\Users\wenzhang1\PycharmProjects\Seasonal-stabilization-slowed-down-greening\Data\need_to_split\dataframe_zscore_LAI_split"
-    outdir = r"C:\Users\wenzhang1\PycharmProjects\Seasonal-stabilization-slowed-down-greening\Data\need_to_split\dataframe_detrend_zscore_LAI_split"
+    # outdir = r"C:/Users/wenzhang1/PycharmProjects/Seasonal-stabilization-slowed-down-greening/Data/need_to_split/dataframe_zscore_LAI_split"
+    outdir = r"C:/Users/wenzhang1/PycharmProjects/Seasonal-stabilization-slowed-down-greening/Data/need_to_split/dataframe_detrend_zscore_LAI_split"
     split_num = 5
-    # fpath = rf"C:\Users\wenzhang1\PycharmProjects\Seasonal-stabilization-slowed-down-greening\Data\need_to_split\dataframe_zscore_LAI\zscore.df"
+    # fpath = rf"C:/Users/wenzhang1/PycharmProjects/Seasonal-stabilization-slowed-down-greening/Data/need_to_split/dataframe_zscore_LAI/zscore.df"
 
-    fpath = r"C:\Users\wenzhang1\PycharmProjects\Seasonal-stabilization-slowed-down-greening\Data\need_to_split\dataframe_detrend_zscore_LAI\detrend_zscore.df"
+    fpath = r"C:/Users/wenzhang1/PycharmProjects/Seasonal-stabilization-slowed-down-greening/Data/need_to_split/dataframe_detrend_zscore_LAI/detrend_zscore.df"
     df = T.load_df(fpath)
     T.print_head_n(df)
     df_list = np.array_split(df, split_num)
@@ -1589,7 +1589,7 @@ def split_dataframe():
     pass
 
 def load_split_dataframe(fdir):
-    # fdir = r"C:\Users\wenzhang1\PycharmProjects\Seasonal-stabilization-slowed-down-greening\Data\need_to_split\dataframe_zscore_LAI_split"
+    # fdir = r"C:/Users/wenzhang1/PycharmProjects/Seasonal-stabilization-slowed-down-greening/Data/need_to_split/dataframe_zscore_LAI_split"
     df_list = []
     for f in T.listdir(fdir):
 
@@ -1605,13 +1605,13 @@ def main():
     # frequency_analysis().run()
 
     ## 2. create SEM model and save the result [figure2]
-    # SEM().run()
+    SEM().run()
 
     ## 3. compare the SEM result between observation and model [figure3]
     # SEM_anaysis().run()
 
     ## 4. create spatial map of frequency of stabilization and amplification [figure4]
-    Stabilization_amplification_longterm_trends().run()
+    # Stabilization_amplification_longterm_trends().run()
 
     pass
 
