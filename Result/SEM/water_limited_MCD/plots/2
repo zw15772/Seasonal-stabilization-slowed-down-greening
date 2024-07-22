@@ -1,0 +1,22 @@
+digraph G {
+	overlap=scale splines=true
+	edge [fontsize=12]
+	node [fillcolor="#cae6df" shape=circle style=filled]
+	node [shape=box style=""]
+	late_MCD [label=late_MCD]
+	early_Temp [label=early_Temp]
+	early_peak_MCD [label=early_peak_MCD]
+	early_precip [label=early_precip]
+	late_SMroot [label=late_SMroot]
+	late_Temp [label=late_Temp]
+	late_precip [label=late_precip]
+	peak_precip [label=peak_precip]
+	early_Temp -> early_peak_MCD [label="0.282\np-val: 0.00"]
+	early_precip -> early_peak_MCD [label="0.705\np-val: 0.00"]
+	early_peak_MCD -> late_SMroot [label="-0.458\np-val: 0.00"]
+	late_Temp -> late_SMroot [label="-0.136\np-val: 0.00"]
+	peak_precip -> late_SMroot [label="4.062\np-val: 0.00"]
+	late_SMroot -> late_MCD [label="0.910\np-val: 0.00"]
+	late_Temp -> late_MCD [label="0.561\np-val: 0.00"]
+	late_precip -> late_MCD [label="-0.150\np-val: 0.43"]
+}
