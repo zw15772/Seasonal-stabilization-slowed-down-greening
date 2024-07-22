@@ -1725,3 +1725,6 @@ class Stabilization_amplification_longterm_trends:
 
 
         plt.show()
+
+
+
