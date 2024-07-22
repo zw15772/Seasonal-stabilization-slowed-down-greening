@@ -319,20 +319,20 @@ class frequency_analysis():  # Amplification and Stabilization analysis
         ## 2. add landcover and trend, row, and some attributes such as aridity
 
         # call the function in the class of 'build_dataframe'
-        # df = T.load_df(self.dff)
-        # build_dataframe().add_row(df)
-        # build_dataframe().add_NDVI_mask(df)
-        # build_dataframe().add_GLC_landcover_data_to_df(df)
-        # build_dataframe().add_max_trend_to_df(df)
-        # P_PET_fdir = data_root + rf'/Base_data/aridity_P_PET_dic/'
-        # P_PET_dic = build_dataframe().P_PET_ratio(P_PET_fdir)
-        #
-        # P_PET_reclass_dic = build_dataframe().P_PET_reclass_2(P_PET_dic)
-        # df = T.add_spatial_dic_to_df(df, P_PET_reclass_dic, 'HI_class')
+        df = T.load_df(self.dff)
+        build_dataframe().add_row(df)
+        build_dataframe().add_NDVI_mask(df)
+        build_dataframe().add_GLC_landcover_data_to_df(df)
+        build_dataframe().add_max_trend_to_df(df)
+        P_PET_fdir = data_root + rf'/Base_data/aridity_P_PET_dic/'
+        P_PET_dic = build_dataframe().P_PET_ratio(P_PET_fdir)
+
+        P_PET_reclass_dic = build_dataframe().P_PET_reclass_2(P_PET_dic)
+        df = T.add_spatial_dic_to_df(df, P_PET_reclass_dic, 'HI_class')
 
 
-        # T.save_df(df, self.dff)
-        # T.df_to_excel(df, self.dff.replace('.df', ''))
+        T.save_df(df, self.dff)
+        T.df_to_excel(df, self.dff.replace('.df', ''))
 
 
         # 3. plot frequency heatmap
@@ -344,7 +344,7 @@ class frequency_analysis():  # Amplification and Stabilization analysis
 
 
         # 4. create spatial map of frequency of stabilization and amplification
-        # self.spatial_frequency()
+        self.spatial_frequency()
 
 
         pass
@@ -464,7 +464,7 @@ class frequency_analysis():  # Amplification and Stabilization analysis
 
 
     def frenquency_heatmap(self,df):
-        T.print_head_n(df, 10)
+
 
         # df = df.drop_duplicates(subset=['pix'])
         vals_dic = DIC_and_TIF().void_spatial_dic()
@@ -740,7 +740,7 @@ class SEM:
 
     def run(self):
         ## 1. load dataframe
-        df = self.__load_df()
+        df = self.load_df()
         ## 2. model description
         des = self.model_description_detrend()
 
@@ -752,7 +752,7 @@ class SEM:
 
         pass
 
-    def __load_df(self):
+    def load_df(self):
         df_dir = join(data_root,'dataframe_detrend_zscore_LAI_split')
         df = load_split_dataframe(df_dir)
         # df = T.load_df(dff)
@@ -862,7 +862,7 @@ class SEM_anaysis():  #### SEM result comparision between observation and model
 
                 df_l = df[df['lval'] == lv]
                 df_r = df_l[df_l['rval'] == rv]
-                print (df_r)
+                # print (df_r)
 
                 if len(df_r) != 1:
                     print(len(df_r))
@@ -877,8 +877,8 @@ class SEM_anaysis():  #### SEM result comparision between observation and model
                 result_dict[key][model] = Estimate
                 # result_dict[key] = Estimate
         df_result = T.dic_to_df(result_dict, 'path')
-        print(df_result)
-        T.print_head_n(df_result)
+        # print(df_result)
+        # T.print_head_n(df_result)
         obs_SEM_result = self.obs_SEM(region)
         path = df_result['path']
         boxes = []
@@ -894,9 +894,9 @@ class SEM_anaysis():  #### SEM result comparision between observation and model
                 if type(v) == float:
                     vals_i_list.append(v)
 
-                    print(flag)
+                    # print(flag)
 
-                    print(df_p.columns)
+                    # print(df_p.columns)
                     model_name = df_p.columns[flag+1]
                     plt.scatter(v,p, marker=marker_list[flag], color=color_list[flag], s=30,zorder=5,linewidths=0.5,edgecolors='k',label=model_name)
                     flag+=1
@@ -926,7 +926,7 @@ class SEM_anaysis():  #### SEM result comparision between observation and model
         df = T.load_df(fpath)
         df = df[df['op'] == '~']
         path_list = []
-        T.print_head_n(df)
+
         results_dict = {}
         for i, row in df.iterrows():
             lv = row['lval']
@@ -996,7 +996,7 @@ class Stabilization_amplification_longterm_trends:
         # self.calculate_stabilization_temporal_change_statistic()
 
         ## 5 composite the results of  stabilization trends and LAI trends over 2003-2021
-        # self.zscore_vs_stabilization_composition()
+        self.zscore_vs_stabilization_composition()
 
         ##5 plot the feedback vs trend
         self.plot_feedback_vs_trend()
@@ -1225,7 +1225,7 @@ class Stabilization_amplification_longterm_trends:
                     fit_value_yearly = result_i['fit_value_yearly']
                     k_value = result_i['k_value']
                     p_value = result_i['p_value']
-                    print(f'{region}_{variable}', 'k={:0.2f},p={:0.4f}'.format(k_value, p_value))
+                    # print(f'{region}_{variable}', 'k={:0.2f},p={:0.4f}'.format(k_value, p_value))
                     yearlist=range(2003,2022)
 
                     plt.plot(yearlist,mean_value_yearly, label=variable, c=color, zorder=zorder, linewidth=linewidth)
@@ -1597,7 +1597,7 @@ def load_split_dataframe(fdir):
         df = T.load_df(dff)
         df_list.append(df)
     df_total = pd.concat(df_list)
-    T.print_head_n(df_total)
+
     return df_total
 
 def main():
@@ -1605,13 +1605,13 @@ def main():
     # frequency_analysis().run()
 
     ## 2. create SEM model and save the result [figure2]
-    SEM().run()
+    # SEM().run()
 
     ## 3. compare the SEM result between observation and model [figure3]
     # SEM_anaysis().run()
 
     ## 4. create spatial map of frequency of stabilization and amplification [figure4]
-    # Stabilization_amplification_longterm_trends().run()
+    Stabilization_amplification_longterm_trends().run()
 
     pass
 
